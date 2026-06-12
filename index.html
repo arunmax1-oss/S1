@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SentinelOne — Competitive Intelligence Brief | June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f0a1a;
+    --surface:#19112e;
+    --surface2:#211640;
+    --surface3:#2a1d50;
+    --border:#3d2d6a;
+    --border-light:#2e2050;
+    --text:#f0ecff;
+    --text-light:#b8a8e8;
+    --text-muted:#7a62b8;
+    --violet:#7c3aed;
+    --violet-light:#a78bfa;
+    --violet-glow:rgba(124,58,237,0.15);
+    --violet-dim:rgba(124,58,237,0.08);
+    --green:#22c55e;
+    --green-bg:rgba(34,197,94,0.1);
+    --red:#ef4444;
+    --red-bg:rgba(239,68,68,0.1);
+    --amber:#f59e0b;
+    --amber-bg:rgba(245,158,11,0.1);
+    --cyan:#06b6d4;
+    --cyan-bg:rgba(6,182,212,0.1);
+    --radius:6px;
+    --radius-lg:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;}
+
+  /* ── HEADER ── */
+  .hdr{background:var(--surface);border-bottom:2px solid var(--violet);position:relative;overflow:hidden;}
+  .hdr::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(124,58,237,0.18) 0%,transparent 65%);pointer-events:none;}
+  .hdr::after{content:'';position:absolute;bottom:-60px;left:20%;width:300px;height:300px;background:radial-gradient(circle,rgba(167,139,250,0.08) 0%,transparent 70%);pointer-events:none;}
+  .hdr-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(124,58,237,0.025) 3px,rgba(124,58,237,0.025) 4px);pointer-events:none;}
+  .hdr-inner{max-width:1120px;margin:0 auto;padding:52px 40px 44px;position:relative;z-index:1;}
+  .hdr-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+  .chip{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid;}
+  .chip-v{color:var(--violet-light);border-color:rgba(167,139,250,.4);background:var(--violet-dim);}
+  .chip-g{color:var(--green);border-color:rgba(34,197,94,.4);background:var(--green-bg);}
+  .chip-a{color:var(--amber);border-color:rgba(245,158,11,.4);background:var(--amber-bg);}
+  .chip-c{color:var(--cyan);border-color:rgba(6,182,212,.4);background:var(--cyan-bg);}
+  .chip-r{color:var(--red);border-color:rgba(239,68,68,.4);background:var(--red-bg);}
+  .chip-m{color:var(--text-muted);border-color:var(--border);background:transparent;}
+  .hdr h1{font-size:42px;font-weight:700;line-height:1.05;margin-bottom:12px;letter-spacing:-.5px;}
+  .hdr h1 em{color:var(--violet-light);font-style:normal;}
+  .hdr-sub{font-size:15px;color:var(--text-light);max-width:600px;margin-bottom:32px;font-weight:300;line-height:1.7;}
+  .stat-row{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;width:fit-content;flex-wrap:wrap;}
+  .stat-box{padding:10px 20px;border-right:1px solid var(--border);}
+  .stat-box:last-child{border-right:none;}
+  .stat-v{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--violet-light);line-height:1;}
+  .stat-l{font-size:10px;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;margin-top:3px;}
+
+  /* ── NAV ── */
+  .nav{background:var(--surface2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .nav ul{max-width:1120px;margin:0 auto;padding:0 40px;list-style:none;display:flex;gap:0;overflow-x:auto;}
+  .nav ul li a{display:block;padding:11px 14px;font-family:'Space Mono',monospace;font-size:10px;color:var(--text);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;}
+  .nav ul li a:hover{color:var(--violet-light);border-bottom-color:var(--violet);background:var(--violet-dim);}
+
+  /* ── LAYOUT ── */
+  .container{max-width:1120px;margin:0 auto;padding:0 40px 80px;}
+  section{padding-top:52px;}
+  .sec-label{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .sec-num{font-family:'Space Mono',monospace;font-size:10px;color:var(--violet-light);font-weight:700;letter-spacing:.12em;}
+  .sec-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);}
+  h2{font-size:22px;font-weight:600;color:var(--text);margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:10px;}
+  h4{font-size:13px;font-weight:500;color:var(--text-light);margin-bottom:6px;}
+  p{color:var(--text-light);margin-bottom:10px;}
+
+  /* ── CARDS ── */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .card-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .card-hdr h3{margin:0;font-size:16px;}
+  .card-hdr .sub{color:var(--text-muted);font-size:11px;font-family:'Space Mono',monospace;margin-top:3px;}
+  .card-body{padding:20px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+  /* ── CALLOUTS ── */
+  .co{border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;border-left:3px solid;}
+  .co-v{border-left-color:var(--violet);background:var(--violet-dim);}
+  .co-g{border-left-color:var(--green);background:var(--green-bg);}
+  .co-r{border-left-color:var(--red);background:var(--red-bg);}
+  .co-a{border-left-color:var(--amber);background:var(--amber-bg);}
+  .co-c{border-left-color:var(--cyan);background:var(--cyan-bg);}
+  .co h4{font-size:12px;font-weight:600;margin-bottom:4px;}
+  .co-v h4{color:var(--violet-light);}
+  .co-g h4{color:var(--green);}
+  .co-r h4{color:var(--red);}
+  .co-a h4{color:var(--amber);}
+  .co-c h4{color:var(--cyan);}
+  .co p{font-size:13px;margin:0;}
+
+  /* ── LISTS ── */
+  .blist{list-style:none;}
+  .blist li{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-light);font-size:13px;color:var(--text-light);line-height:1.5;}
+  .blist li:last-child{border-bottom:none;}
+  .dot{width:6px;height:6px;border-radius:50%;margin-top:7px;flex-shrink:0;}
+  .dv{background:var(--violet-light);}
+  .dg{background:var(--green);}
+  .dr{background:var(--red);}
+  .da{background:var(--amber);}
+  .dc{background:var(--cyan);}
+  .dm{background:var(--text-muted);}
+  .col-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+
+  /* ── EXEC CARDS ── */
+  .exec-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;}
+  .exec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;}
+  .exec-card.opp{border-top:3px solid var(--green);}
+  .exec-card.thr{border-top:3px solid var(--red);}
+  .exec-lbl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+  .opp .exec-lbl{color:var(--green);}
+  .thr .exec-lbl{color:var(--red);}
+  .exec-card h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+  .exec-card p{font-size:13px;margin:0;}
+
+  /* ── PLATFORM PILLARS ── */
+  .pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+  .pillar{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;border-top:3px solid var(--violet);}
+  .pillar-icon{font-size:22px;margin-bottom:8px;}
+  .pillar h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+  .pillar p{font-size:12px;color:var(--text-muted);margin:0;}
+
+  /* ── TABS ── */
+  .tab-bar{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;padding:6px 6px 0;border-bottom:none;overflow-x:auto;}
+  .tab-btn{padding:8px 16px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--text-muted);cursor:pointer;border-radius:4px 4px 0 0;border:1px solid transparent;border-bottom:none;white-space:nowrap;transition:all .15s;letter-spacing:.05em;}
+  .tab-btn:hover{color:var(--text);background:var(--surface3);}
+  .tab-btn.active{color:var(--violet-light);background:var(--surface);border-color:var(--border);border-bottom-color:var(--surface);margin-bottom:-1px;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+  .tab-content{background:var(--surface);border:1px solid var(--border);border-radius:0 var(--radius-lg) var(--radius-lg) var(--radius-lg);padding:24px;}
+
+  /* ── MATRIX ── */
+  .matrix-wrap{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);}
+  .matrix-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .matrix-table thead tr{background:var(--surface3);}
+  .matrix-table thead th{padding:12px 14px;text-align:left;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);}
+  .matrix-table thead th.hi{color:var(--violet-light);}
+  .matrix-table tbody tr{border-bottom:1px solid var(--border-light);}
+  .matrix-table tbody tr:hover{background:rgba(124,58,237,0.04);}
+  .matrix-table tbody td{padding:10px 14px;vertical-align:top;color:var(--text-light);line-height:1.5;}
+  .matrix-table tbody td:first-child{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);min-width:140px;}
+  .matrix-table tbody td.hi{color:var(--text);font-weight:500;}
+  .ck{color:var(--green);font-weight:700;}
+  .cx{color:var(--red);}
+  .cp{color:var(--amber);}
+
+  /* ── GARTNER SCORECARD ── */
+  .score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+  .score-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 14px;text-align:center;}
+  .score-val{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--violet-light);line-height:1;}
+  .score-stars{font-size:16px;color:var(--amber);margin:4px 0;}
+  .score-lbl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-top:4px;}
+
+  /* ── PRAISE/CRITICISM TABLES ── */
+  .review-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
+  .review-table thead tr{background:var(--surface3);}
+  .review-table thead th{text-align:left;padding:8px 12px;font-size:11px;font-family:'Space Mono',monospace;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--border);}
+  .review-table thead th.th-g{color:var(--green);}
+  .review-table thead th.th-r{color:var(--red);}
+  .review-table thead th.th-sub{color:var(--text-muted);}
+  .review-table tbody tr{border-bottom:1px solid var(--border-light);}
+  .review-table tbody tr:nth-child(even){background:var(--surface2);}
+  .review-table tbody td{padding:9px 12px;vertical-align:top;color:var(--text-light);line-height:1.55;}
+  .review-table tbody td.theme-col{font-weight:600;color:var(--text);width:28%;}
+
+  /* ── OPP / THREAT ── */
+  .ot-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .ot-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--border-light);}
+  .ot-item:last-child{border-bottom:none;}
+  .ot-num{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;min-width:26px;padding-top:1px;flex-shrink:0;}
+  .ot-num.o{color:var(--green);}
+  .ot-num.t{color:var(--red);}
+  .ot-body h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+  .ot-body p{font-size:12px;color:var(--text-muted);margin:0;}
+
+  /* ── RECS ── */
+  .rec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .rec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+  .rec-head{padding:10px 14px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+  .rec-head.qw{color:var(--green);background:var(--green-bg);border-bottom:1px solid rgba(34,197,94,.2);}
+  .rec-head.st{color:var(--violet-light);background:var(--violet-dim);border-bottom:1px solid rgba(124,58,237,.2);}
+  .rec-head.df{color:var(--red);background:var(--red-bg);border-bottom:1px solid rgba(239,68,68,.2);}
+  .rec-body{padding:14px;}
+  .rec-body h4{color:var(--text);font-size:13px;font-weight:600;margin-bottom:6px;}
+  .rec-body p{font-size:12px;color:var(--text-muted);margin:0;}
+
+  /* ── POSITIONING MAP ── */
+  .pos-canvas{position:relative;width:100%;height:320px;}
+  .pos-grid-bg{position:absolute;inset:0;background:linear-gradient(var(--border-light) 1px,transparent 1px),linear-gradient(90deg,var(--border-light) 1px,transparent 1px);background-size:25% 25%;border-left:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .pos-ch{position:absolute;top:50%;left:0;right:0;border-top:1px dashed rgba(124,58,237,.2);transform:translateY(-50%);}
+  .pos-cv{position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed rgba(124,58,237,.2);transform:translateX(-50%);}
+  .pos-dot{position:absolute;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;text-align:center;line-height:1.2;transform:translate(-50%,50%);cursor:default;transition:transform .2s;}
+  .pos-dot:hover{transform:translate(-50%,50%) scale(1.15);z-index:10;}
+  .pos-dot.s1{width:52px;height:52px;font-size:9px;background:#3a0070;color:var(--violet-light);border:2px solid var(--violet);}
+  .pos-dot.crwd{background:#1a0f2e;color:#c084fc;border:1px solid #7c3aed;}
+  .pos-dot.msft{background:#0a1a3a;color:#60a5fa;border:1px solid #2563eb;}
+  .pos-dot.palo{background:#0a2a1a;color:#4ade80;border:1px solid #16a34a;}
+  .pos-dot.trlx{background:#2a1a0a;color:#fb923c;border:1px solid #ea580c;}
+  .axis-label{font-family:'Space Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);position:absolute;}
+  .leg-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;}
+  .leg-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);}
+  .leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+  /* ── FOOTER ── */
+  .footer{background:var(--surface);border-top:2px solid var(--violet);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+  .footer-logo{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--violet-light);background:var(--violet-dim);border:1px solid rgba(124,58,237,.3);padding:6px 12px;border-radius:var(--radius);}
+  .footer-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);text-align:right;line-height:1.8;}
+
+  @media(max-width:768px){
+    .container{padding:0 20px 60px;}
+    .hdr-inner{padding:28px 20px;}
+    .hdr h1{font-size:28px;}
+    .grid-2,.grid-3,.exec-grid,.pillar-grid,.ot-grid,.rec-grid,.score-row{grid-template-columns:1fr;}
+    .footer{flex-direction:column;}
+    .footer-meta{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-scan"></div>
+  <div class="hdr-inner">
+    <div class="hdr-eyebrow">
+      <span class="chip chip-v">CI // Cybersecurity</span>
+      <span class="chip chip-g">Gartner EPP Leader 6× Running</span>
+      <span class="chip chip-a">NYSE: S · $1B+ ARR</span>
+      <span class="chip chip-c">AI-Native Platform</span>
+    </div>
+    <h1>SentinelOne —<br><em>The Autonomous Security Platform</em></h1>
+    <div class="hdr-sub">A full competitive intelligence brief on SentinelOne's Singularity Platform — market position, platform pillars, Gartner peer review synthesis, competitor profiles, comparison matrix, and strategic recommendations. June 2026.</div>
+    <div class="stat-row">
+      <div class="stat-box"><span class="stat-v">$1.06B+</span><div class="stat-l">ARR FY2026</div></div>
+      <div class="stat-box"><span class="stat-v">23%</span><div class="stat-l">YoY Revenue Growth</div></div>
+      <div class="stat-box"><span class="stat-v">1,702</span><div class="stat-l">$100K+ ARR Customers</div></div>
+      <div class="stat-box"><span class="stat-v">6×</span><div class="stat-l">Gartner EPP MQ Leader</div></div>
+      <div class="stat-box"><span class="stat-v">40%</span><div class="stat-l">Purple AI Attach Rate</div></div>
+      <div class="stat-box"><span class="stat-v">75%+</span><div class="stat-l">Gross Margin</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <ul>
+    <li><a href="#exec">Exec Summary</a></li>
+    <li><a href="#profile">S1 Profile</a></li>
+    <li><a href="#platform">Platform Pillars</a></li>
+    <li><a href="#competitors">Competitors</a></li>
+    <li><a href="#gartner">Peer Reviews</a></li>
+    <li><a href="#matrix">Matrix</a></li>
+    <li><a href="#posmap">Position Map</a></li>
+    <li><a href="#gaps">Content Gaps</a></li>
+    <li><a href="#opp">Opp & Threats</a></li>
+    <li><a href="#actions">Recommendations</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- 01 EXEC SUMMARY -->
+  <section id="exec">
+    <div class="sec-label"><span class="sec-num">01</span><span class="sec-tag">Executive Summary</span></div>
+    <h2>Where SentinelOne Stands — and Where It Needs to Win</h2>
+    <p>SentinelOne has reached a genuine inflection point in FY2026. Crossing $1 billion ARR, achieving non-GAAP profitability, and delivering Purple AI at a 40% attach rate on new licenses signals that the company has moved from hyper-growth startup to durable enterprise platform. The Singularity Platform now spans endpoint, cloud workload, identity, and data lake — and the February 2026 identity portfolio launch positions SentinelOne to compete in one of the fastest-growing security categories.</p>
+    <p>Yet three structural challenges define the competitive outlook: CrowdStrike's scale advantage (~5× the revenue) and threat intelligence depth, Microsoft's bundling economics in M365-centric enterprises, and Palo Alto's "platformization" play targeting the same CISO consolidation budget. SentinelOne's path to the next ARR milestone runs through disciplined cross-sell execution, Purple AI's deepening from tool to workflow, and winning the identity security credibility argument against native identity vendors.</p>
+    <div class="exec-grid">
+      <div class="exec-card opp">
+        <div class="exec-lbl">Biggest Opportunity</div>
+        <h4>AI-Native Identity Security — First-Mover in Non-Human Identities</h4>
+        <p>The Feb 2026 Singularity Identity launch addresses the fastest-growing attack surface: autonomous AI agents, service accounts, and non-human identities that operate inside authorized workflows. No competitor has a purpose-built non-human identity security narrative at GA. SentinelOne's platform correlation (endpoint + identity + workload signals in one agent) is a structural advantage that CrowdStrike and Microsoft cannot replicate without architectural changes.</p>
+      </div>
+      <div class="exec-card thr">
+        <div class="exec-lbl">Biggest Threat</div>
+        <h4>Microsoft's $37B Bundling Machine Prices SentinelOne Out of M365 Shops</h4>
+        <p>Microsoft has quietly built a $37B cybersecurity business. For organizations on Microsoft 365 E5, Defender XDR, Sentinel, and Entra ID effectively cost nothing incremental. SentinelOne cannot compete on price in these accounts — it must compete on detection quality, autonomous response, and Purple AI's investigation speed. The risk: as M365 E5 penetration deepens, SentinelOne's total addressable market in mid-enterprise compresses without a clear wedge.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 S1 PROFILE -->
+  <section id="profile">
+    <div class="sec-label"><span class="sec-num">02</span><span class="sec-tag">Company Profile</span></div>
+    <h2>SentinelOne — Full Profile</h2>
+    <div class="card">
+      <div class="card-hdr">
+        <div>
+          <h3>SentinelOne (NYSE: S)</h3>
+          <div class="sub">Mountain View, CA · Founded 2013 · IPO July 2021 · ~3,000 employees · FY2026 Revenue ~$1.06B</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="chip chip-g">Gartner EPP Leader 6×</span>
+          <span class="chip chip-v">Latio SOC Platform Leader</span>
+          <span class="chip chip-a">FedRAMP Authorized</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="co co-v">
+          <h4>Core Value Proposition</h4>
+          <p>The AI-native autonomous security platform. SentinelOne's Singularity Platform unifies endpoint, cloud, identity, and data intelligence — detecting, investigating, and responding to threats at machine speed without human intervention. One agent, one platform, one data lake. Purple AI, its generative AI security analyst, reached a 40% attach rate on new licenses in late 2025 and is redefining investigation workflows across enterprise SOCs.</p>
+        </div>
+        <div class="grid-3" style="margin-top:16px;">
+          <div>
+            <div class="col-title">Messaging Themes</div>
+            <ul class="blist">
+              <li><span class="dot dv"></span>"AI-native" — not AI-added; Behavioral AI runs on-device, independent of cloud connectivity</li>
+              <li><span class="dot dv"></span>"Autonomous security" — 1-Click Rollback, automated remediation without analyst intervention</li>
+              <li><span class="dot dv"></span>Purple AI as the world's most advanced AI security analyst</li>
+              <li><span class="dot dv"></span>"One agent, one platform, one data lake" — anti-complexity positioning</li>
+              <li><span class="dot dv"></span>Storyline™ — patented attack context correlation, machine-generated narrative from all telemetry</li>
+              <li><span class="dot dv"></span>Offline protection advantage vs cloud-dependent competitors</li>
+            </ul>
+          </div>
+          <div>
+            <div class="col-title">Key Strategic Moves (Recent)</div>
+            <ul class="blist">
+              <li><span class="dot da"></span><strong>Feb 2026:</strong> New Singularity Identity portfolio — secures human + non-human AI agent identities</li>
+              <li><span class="dot da"></span><strong>2025:</strong> Acquired Prompt Security ($180M) — AI Security for employee GenAI usage and agentic workloads</li>
+              <li><span class="dot da"></span><strong>2025:</strong> Acquired Observo AI → Singularity AI Data Pipelines (pre-ingestion filtering, normalization)</li>
+              <li><span class="dot da"></span><strong>2025:</strong> Purple AI reaches 40% attach rate on new licenses</li>
+              <li><span class="dot da"></span><strong>2025:</strong> Named Latio SOC Platform Leader</li>
+              <li><span class="dot da"></span><strong>2025:</strong> Lenovo partnership — targets 30M endpoint deployments</li>
+              <li><span class="dot da"></span><strong>2024:</strong> Achieved free cash flow positivity; non-GAAP operating margin flipped positive 2025</li>
+            </ul>
+          </div>
+          <div>
+            <div class="col-title">Strengths & Gaps</div>
+            <ul class="blist">
+              <li><span class="dot dg"></span>On-device Behavioral AI — works offline; no cloud dependency for detection</li>
+              <li><span class="dot dg"></span>1-Click Rollback — fastest ransomware recovery in category; no human required</li>
+              <li><span class="dot dg"></span>Storyline™ — industry-unique patented attack correlation technology</li>
+              <li><span class="dot dg"></span>Singularity Data Lake — lower ingestion cost vs. traditional SIEM</li>
+              <li><span class="dot dr"></span>4–5% endpoint market share vs CrowdStrike/Microsoft ~2× each</li>
+              <li><span class="dot dr"></span>Threat intelligence depth: CrowdStrike's Threat Graph (2T events/week) still leads</li>
+              <li><span class="dot dr"></span>MITRE Engenuity: withdrew from most recent cross-domain evaluation — cited by competitors</li>
+              <li><span class="dot dr"></span>Stock ~83% below 2021 all-time high; market cap remains deeply discounted vs. CrowdStrike</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 PLATFORM PILLARS -->
+  <section id="platform">
+    <div class="sec-label"><span class="sec-num">03</span><span class="sec-tag">Platform Architecture</span></div>
+    <h2>Singularity Platform — All Pillars</h2>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-icon">🖥</div>
+        <h4>Singularity Endpoint</h4>
+        <p>Core EDR/EPP with on-device Behavioral AI, NGAV, 1-Click Rollback, Storyline™ attack correlation, and offline protection. Gartner EPP MQ Leader 6 consecutive years. Tiers: Core, Control, Complete, Commercial.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">☁</div>
+        <h4>Singularity Cloud</h4>
+        <p>Cloud Workload Protection across AWS, Azure, GCP — runtime protection, CSPM, KSPM (Kubernetes), agentless scanning. Cloud security accounted for 50% of new bookings in recent quarters — the fastest-growing pillar.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🆔</div>
+        <h4>Singularity Identity</h4>
+        <p>Launched Feb 2026: secures human identities, service accounts, APIs, and autonomous AI agents. Continuous validation of access during activity — not just at authentication. Combines Attivo Networks heritage with Prompt Security AI agent coverage.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🔮</div>
+        <h4>Purple AI</h4>
+        <p>Generative AI security analyst — natural language threat hunting, automated investigation, threat summaries across all Singularity data. 40% attach rate on new licenses (late 2025). The primary ARR expansion driver in enterprise renewals.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🗄</div>
+        <h4>Singularity AI SIEM + Data Lake</h4>
+        <p>Unified security data lake ingesting structured and unstructured data from any source. AI Data Pipelines (Observo AI acquisition) perform pre-ingestion filtering to reduce noise and cost. Sub-second queries at petabyte scale. Competes directly with Splunk and Microsoft Sentinel.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🛡</div>
+        <h4>Singularity MDR / WatchTower</h4>
+        <p>Managed Detection and Response with average MTTR of ~4 minutes per Gartner reviewer evidence. WatchTower threat intelligence feeds Purple AI with curated adversary TTP context. 2025 Gartner Customers' Choice for XDR — one of only two vendors awarded.</p>
+      </div>
+    </div>
+    <div class="co co-c">
+      <h4>Flex Licensing Model — A Strategic Growth Lever</h4>
+      <p>SentinelOne Flex allows customers to allocate and reallocate security capacity across modules without re-signing. This reduces friction for cross-sell (adding Identity or Cloud to an existing Endpoint deployment) and drives the multi-product expansion metrics: 75%+ YoY growth in enterprise customers with 3+ solutions, 150%+ with 5+ solutions. The Flex model mirrors CrowdStrike's successful consumption approach and is a primary driver of net revenue retention improvement.</p>
+    </div>
+  </section>
+
+  <!-- 04 COMPETITORS -->
+  <section id="competitors">
+    <div class="sec-label"><span class="sec-num">04</span><span class="sec-tag">Competitor Profiles</span></div>
+    <h2>Primary Competitor Landscape</h2>
+
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab('crwd')">CrowdStrike</div>
+      <div class="tab-btn" onclick="switchTab('msft')">Microsoft Defender XDR</div>
+      <div class="tab-btn" onclick="switchTab('palo')">Palo Alto Cortex</div>
+      <div class="tab-btn" onclick="switchTab('trlx')">Trellix</div>
+    </div>
+
+    <!-- CROWDSTRIKE -->
+    <div class="tab-panel active" id="panel-crwd">
+      <div class="tab-content">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+          <div><h3 style="font-size:18px;margin-bottom:4px;">CrowdStrike Falcon Platform</h3>
+          <div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--text-muted);">NASDAQ: CRWD · ~$5.9B Revenue FY2026 · ~15x S1 market cap · Gartner EPP & SIEM Leader</div></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="chip chip-r">Primary Threat</span><span class="chip chip-m">Category Benchmark</span></div>
+        </div>
+        <div class="co co-v"><h4>Core Positioning</h4><p>The category-defining enterprise cybersecurity platform. CrowdStrike's Falcon unifies endpoint, identity, cloud, and SIEM with 2 trillion events/week through its Threat Graph — the deepest adversary intelligence in the market. Charlotte AI delivers agentic SOAR, compressing 4-day tasks to minutes. FY2026 revenue approaching $6B at ~23% growth; free cash flow of $1.24B vs SentinelOne's $51M — the scale gap is real and compounding.</p></div>
+        <div class="grid-3" style="margin-top:16px;">
+          <div><div class="col-title">Key Strengths</div>
+            <ul class="blist">
+              <li><span class="dot dr"></span>Threat Graph: 2T events/week — unmatched adversary intelligence depth</li>
+              <li><span class="dot dr"></span>Charlotte AI agentic SOAR — GA; automation rate cited by customers</li>
+              <li><span class="dot dr"></span>100% detection/protection in MITRE 2025 ATT&CK evaluation (S1 withdrew)</li>
+              <li><span class="dot dr"></span>OverWatch managed threat hunting — 24/7 Tier 3 extension for SOC teams</li>
+              <li><span class="dot dr"></span>Google Cloud Security Partner of the Year 2026 (2nd consecutive)</li>
+              <li><span class="dot dr"></span>Next-Gen SIEM: record ARR, competes directly with S1 Data Lake</li>
+            </ul>
+          </div>
+          <div><div class="col-title">Weaknesses → S1 Exploits</div>
+            <ul class="blist">
+              <li><span class="dot dg"></span>July 2024 outage (Falcon sensor update) — largest IT outage in history; trust scar persists in risk-averse verticals</li>
+              <li><span class="dot dg"></span>Cloud-dependent architecture — single point of failure; S1's on-device AI works offline</li>
+              <li><span class="dot dg"></span>Falcon agent requires cloud connectivity for full protection vs S1's offline capability</li>
+              <li><span class="dot dg"></span>Complexity at scale — some customers cite management overhead vs S1's simpler deployment</li>
+              <li><span class="dot dg"></span>Premium pricing; Falcon Flex consumption model still newer than S1's equivalent</li>
+            </ul>
+          </div>
+          <div><div class="col-title">S1 Battlecard — Key Messages</div>
+            <ul class="blist">
+              <li><span class="dot dv"></span><strong>On the outage:</strong> "SentinelOne's on-device AI architecture means a bad update cannot take down your endpoints — our AI runs locally, not dependent on a cloud pipeline to respond."</li>
+              <li><span class="dot dv"></span><strong>On rollback:</strong> "Only SentinelOne delivers 1-Click Rollback from ransomware with zero cloud dependency — reversing encryption in seconds, no analyst required."</li>
+              <li><span class="dot dv"></span><strong>On Storyline:</strong> "CrowdStrike correlates telemetry in the cloud. SentinelOne's Storyline correlates every event on-device, in real time — your story is complete before it ever leaves the endpoint."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MICROSOFT -->
+    <div class="tab-panel" id="panel-msft">
+      <div class="tab-content">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+          <div><h3 style="font-size:18px;margin-bottom:4px;">Microsoft Defender XDR + Sentinel</h3>
+          <div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--text-muted);">$37B cybersecurity business · Bundled in M365 E5 · Copilot for Security (GA 2024) · Azure-native</div></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="chip chip-r">Bundling Threat</span><span class="chip chip-m">Scale Leader</span></div>
+        </div>
+        <div class="co co-v"><h4>Core Positioning</h4><p>The enterprise security platform for Microsoft-centric organizations. Microsoft's $37B cybersecurity revenue makes it larger than CrowdStrike, Palo Alto, and Zscaler combined. Defender XDR correlates signals from endpoints, identity (Entra ID), email, cloud apps, and SaaS in a single portal. Copilot for Security brings natural-language investigation to M365 E5 customers at no incremental cost — the most aggressive pricing pressure SentinelOne faces in enterprise.</p></div>
+        <div class="grid-3" style="margin-top:16px;">
+          <div><div class="col-title">Key Strengths</div>
+            <ul class="blist">
+              <li><span class="dot dr"></span>M365 E5 bundling — Defender + Sentinel effectively free for existing subscribers</li>
+              <li><span class="dot dr"></span>Copilot for Security — most mature GenAI investigation platform; MCP Server integration</li>
+              <li><span class="dot dr"></span>Native M365/Azure telemetry — no connector required for the dominant enterprise stack</li>
+              <li><span class="dot dr"></span>Predictive shielding — preemptively hardens environments against anticipated attack progression</li>
+              <li><span class="dot dr"></span>$37B cybersecurity revenue; unlimited investment capacity</li>
+            </ul>
+          </div>
+          <div><div class="col-title">Weaknesses → S1 Exploits</div>
+            <ul class="blist">
+              <li><span class="dot dg"></span>Heterogeneous environments — Defender is weakest outside Windows/M365 ecosystem</li>
+              <li><span class="dot dg"></span>No on-device autonomous AI — cloud-dependent; S1's offline detection is a meaningful gap in OT/industrial or disconnected environments</li>
+              <li><span class="dot dg"></span>Complexity for non-M365-native orgs — third-party connectors inconsistent</li>
+              <li><span class="dot dg"></span>CLOUD Act / jurisdiction concerns for EU and regulated sectors</li>
+              <li><span class="dot dg"></span>Gartner Peer Insights rating 4.6 vs S1's 4.7 — quality parity message is valid</li>
+            </ul>
+          </div>
+          <div><div class="col-title">S1 Battlecard — Key Messages</div>
+            <ul class="blist">
+              <li><span class="dot dv"></span><strong>On bundling:</strong> "M365 E5 bundles Defender — but 'included' isn't the same as 'best.' When a breach happens on Friday night, do you want the platform that automates response in seconds, or the one that requires an analyst to act?"</li>
+              <li><span class="dot dv"></span><strong>On heterogeneous environments:</strong> "If 20% of your fleet isn't Windows, Microsoft's protection degrades significantly. SentinelOne protects Linux, macOS, cloud workloads, and Windows with the same detection depth."</li>
+              <li><span class="dot dv"></span><strong>On autonomy:</strong> "Microsoft automates investigation. SentinelOne automates remediation. The difference matters at 2 a.m."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PALO ALTO -->
+    <div class="tab-panel" id="panel-palo">
+      <div class="tab-content">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+          <div><h3 style="font-size:18px;margin-bottom:4px;">Palo Alto Networks — Cortex XDR + XSIAM</h3>
+          <div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--text-muted);">NASDAQ: PANW · ~$8.2B Revenue FY2025 · Platformization strategy · XDR + SIEM + SOAR unified</div></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="chip chip-r">Platform Consolidation Threat</span><span class="chip chip-m">XSIAM Leader</span></div>
+        </div>
+        <div class="co co-v"><h4>Core Positioning</h4><p>The platform consolidation play. Palo Alto's "platformization" strategy convinces CISOs to consolidate network security (NGFW), endpoint (Cortex XDR), cloud (Prisma Cloud), and SOC operations (XSIAM) into one contract with one vendor. XSIAM absorbed QRadar SaaS (IBM) customers in 2024 and competes directly with SentinelOne's SIEM ambitions. Unit 42 threat intelligence team is one of the most cited in the industry.</p></div>
+        <div class="grid-3" style="margin-top:16px;">
+          <div><div class="col-title">Key Strengths</div>
+            <ul class="blist">
+              <li><span class="dot dr"></span>Platformization: endpoint + network + cloud + SOC in one contract</li>
+              <li><span class="dot dr"></span>Unit 42 threat intelligence — broadly cited by industry analysts and press</li>
+              <li><span class="dot dr"></span>XSIAM absorbed IBM QRadar SaaS — growing SIEM market share directly vs S1</li>
+              <li><span class="dot dr"></span>NGFW estate creates a natural cross-sell pathway to Cortex XDR</li>
+              <li><span class="dot dr"></span>AI-driven XSIAM platform with strong SOC automation narrative</li>
+            </ul>
+          </div>
+          <div><div class="col-title">Weaknesses → S1 Exploits</div>
+            <ul class="blist">
+              <li><span class="dot dg"></span>Cortex XDR primary strength is network-centric orgs — less competitive in endpoint-first evaluations</li>
+              <li><span class="dot dg"></span>XSIAM complexity — expensive, requires significant PS engagement to deploy</li>
+              <li><span class="dot dg"></span>Platformization forces large commitments upfront — less suitable for agile mid-market buyers</li>
+              <li><span class="dot dg"></span>Valuation compression in 2026 (peaked ~70× forward earnings); deal velocity may slow</li>
+              <li><span class="dot dg"></span>No on-device autonomous AI equivalent to S1's Behavioral AI</li>
+            </ul>
+          </div>
+          <div><div class="col-title">S1 Battlecard — Key Messages</div>
+            <ul class="blist">
+              <li><span class="dot dv"></span><strong>On platformization:</strong> "Palo Alto wants you to buy everything from them at once. SentinelOne Flex lets you start with endpoint protection today and expand to cloud, identity, and SIEM at your own pace — without a forced platform renegotiation."</li>
+              <li><span class="dot dv"></span><strong>On endpoint depth:</strong> "XSIAM was built for the SOC, not the endpoint. In an endpoint bake-off, SentinelOne's Behavioral AI and 1-Click Rollback win consistently."</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRELLIX -->
+    <div class="tab-panel" id="panel-trlx">
+      <div class="tab-content">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+          <div><h3 style="font-size:18px;margin-bottom:4px;">Trellix (fka McAfee Enterprise + FireEye)</h3>
+          <div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--text-muted);">Private · Symphony Technology Group · 40,000+ customers · 80% of Fortune 100 · Legacy incumbent</div></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="chip chip-a">Installed Base</span><span class="chip chip-m">Legacy Displacement</span></div>
+        </div>
+        <div class="co co-v"><h4>Core Positioning</h4><p>The legacy incumbent defending a massive installed base. Trellix was formed from the McAfee Enterprise + FireEye merger, retaining 40,000+ customers and presence in 80% of Fortune 100. Its XDR messaging is defensive — preventing displacement rather than winning new logos. The AI capabilities are improving (Wise AI) but trail SentinelOne's Purple AI in both depth and market recognition. Trellix's primary moat is switching cost inertia, not competitive superiority.</p></div>
+        <div class="grid-3" style="margin-top:16px;">
+          <div><div class="col-title">Key Strengths</div>
+            <ul class="blist">
+              <li><span class="dot dr"></span>Largest installed base in category — 40,000+ customers, 80% Fortune 100</li>
+              <li><span class="dot dr"></span>FireEye threat intelligence heritage — deep nation-state actor coverage</li>
+              <li><span class="dot dr"></span>Single-agent architecture across endpoint, email, network</li>
+              <li><span class="dot dr"></span>Wise AI — improving AI-driven automation for existing customers</li>
+            </ul>
+          </div>
+          <div><div class="col-title">Weaknesses → S1 Exploits</div>
+            <ul class="blist">
+              <li><span class="dot dg"></span>Fell to Gartner MQ Niche Player — lost Leaders status; credibility declining</li>
+              <li><span class="dot dg"></span>Post-merger integration fatigue — customers cite complexity of combined platform</li>
+              <li><span class="dot dg"></span>AI capabilities (Wise AI) trail Purple AI in analyst recognition and attach rate</li>
+              <li><span class="dot dg"></span>No cloud-native architecture — legacy codebase limits agility</li>
+              <li><span class="dot dg"></span>Private ownership limits transparency on R&D investment trajectory</li>
+            </ul>
+          </div>
+          <div><div class="col-title">S1 Displacement Strategy</div>
+            <ul class="blist">
+              <li><span class="dot dv"></span>Target Trellix renewal accounts 9–12 months ahead of expiry with MITRE comparison data and Purple AI demo</li>
+              <li><span class="dot dv"></span>Emphasise Gartner MQ gap — Trellix dropped to Niche Player; S1 is a 6× Leader</li>
+              <li><span class="dot dv"></span>Lead with cloud workload protection — Trellix has no credible Singularity Cloud equivalent</li>
+              <li><span class="dot dv"></span>Migration services: offer structured migration programme to reduce inertia as the primary objection</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 GARTNER PEER REVIEWS -->
+  <section id="gartner">
+    <div class="sec-label"><span class="sec-num">05</span><span class="sec-tag">Voice of the Customer</span></div>
+    <h2>Gartner Peer Insights — Review Synthesis</h2>
+    <div class="score-row">
+      <div class="score-box">
+        <div class="score-val">4.7</div>
+        <div class="score-stars">★★★★★</div>
+        <div class="score-lbl">S1 Overall Rating<br><span style="font-size:9px;color:var(--text-muted);">2,875 verified reviews</span></div>
+      </div>
+      <div class="score-box">
+        <div class="score-val">4.7</div>
+        <div class="score-stars" style="color:var(--text-muted);">★★★★★</div>
+        <div class="score-lbl">vs CrowdStrike 4.7<br><span style="font-size:9px;color:var(--text-muted);">3,068 reviews</span></div>
+      </div>
+      <div class="score-box">
+        <div class="score-val">4.6</div>
+        <div class="score-stars" style="color:var(--text-muted);">★★★★☆</div>
+        <div class="score-lbl">vs Microsoft 4.6<br><span style="font-size:9px;color:var(--text-muted);">Defender for Endpoint</span></div>
+      </div>
+      <div class="score-box">
+        <div class="score-val">4.4</div>
+        <div class="score-stars" style="color:var(--text-muted);">★★★★☆</div>
+        <div class="score-lbl">vs Trellix 4.4<br><span style="font-size:9px;color:var(--text-muted);">Declining trend</span></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="col-title">Recurring Praise Themes</div>
+        <table class="review-table">
+          <thead><tr><th class="th-g th-sub" style="width:30%;">Theme</th><th class="th-g th-sub">What Reviewers Say</th></tr></thead>
+          <tbody>
+            <tr><td class="theme-col">Detection accuracy & speed</td><td>Reviewers cite very advanced and precise threat detection, combined with a user interface that is straightforward and easy to understand in daily operations. MDR service averages ~4 minute MTTR — described as a major benefit when responding to threats efficiently.</td></tr>
+            <tr><td class="theme-col">Purple AI value</td><td>Security analysts highlight natural language threat hunting and automated investigation summaries as genuinely productivity-changing in daily operations — not just a demo feature. Reduces time to triage and enables junior analysts to work at senior level.</td></tr>
+            <tr><td class="theme-col">Deployment simplicity</td><td>Consistently cited as faster and simpler to deploy than CrowdStrike at scale. The single-agent architecture with no separate modules to manage is a recurring positive, particularly in heterogeneous OS environments.</td></tr>
+            <tr><td class="theme-col">1-Click Rollback</td><td>Ransomware recovery capability consistently called out as uniquely differentiated. Reviewers note that the ability to reverse ransomware without cloud connectivity and without analyst intervention is a genuine capability gap vs. competitors.</td></tr>
+            <tr><td class="theme-col">Cross-platform coverage</td><td>Strong ratings specifically for Linux and macOS protection quality — an area where Microsoft Defender reviewers consistently note gaps. Valued by orgs with mixed fleets.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="col-title">Recurring Criticism Themes</div>
+        <table class="review-table">
+          <thead><tr><th class="th-r th-sub" style="width:30%;">Theme</th><th class="th-r th-sub">What Reviewers Say</th></tr></thead>
+          <tbody>
+            <tr><td class="theme-col">False positive rate</td><td>CrowdStrike's own comparison materials cite SentinelOne's 50% protection score with 7 false positives in its most recent MITRE evaluation (from which S1 subsequently withdrew). Some reviewers note alert fatigue from over-detection in tuned environments.</td></tr>
+            <tr><td class="theme-col">SIEM / Data Lake maturity</td><td>Reviewers evaluating Singularity AI SIEM note it is improving but still trails Splunk and Sentinel in integration ecosystem depth and query language flexibility. Seen as strong for S1-native data, less compelling as a universal SIEM replacement.</td></tr>
+            <tr><td class="theme-col">Threat intelligence depth</td><td>Enterprise SOC teams comparing directly to CrowdStrike note that Threat Graph's 2T events/week creates an adversary intelligence advantage that S1's Singularity data lake has not yet matched for threat hunting against novel nation-state TTPs.</td></tr>
+            <tr><td class="theme-col">Support escalation speed</td><td>Some enterprise reviewers note that support escalations for complex incidents require more back-and-forth than expected given the price tier. Contrast with CrowdStrike's OverWatch which is uniformly praised for proactive engagement.</td></tr>
+            <tr><td class="theme-col">Pricing transparency</td><td>Module-based pricing (endpoint, cloud, identity, SIEM as separate SKUs) creates complexity in procurement. Some reviewers note that total platform cost at scale is higher than initial estimates, particularly when cloud workload protection is added.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="co co-v" style="margin-top:20px;">
+      <h4>CI Implications — What the Review Data Tells Us</h4>
+      <p>At 4.7 stars on 2,875 reviews, SentinelOne matches CrowdStrike on Gartner Peer Insights quality perception — a genuinely strong position given the 15× market cap gap. The MITRE withdrawal is a live objection in competitive deals and needs a prepared counter (architectural differences in cross-domain evaluation scope). The Purple AI praise is authentic and should be amplified in marketing — reviewers consistently describe it as operational, not aspirational. The SIEM maturity criticism signals that Singularity AI SIEM needs 2–3 more named case studies from enterprises who replaced Splunk or Sentinel with it, not just supplemented it.</p>
+    </div>
+  </section>
+
+  <!-- 06 MATRIX -->
+  <section id="matrix">
+    <div class="sec-label"><span class="sec-num">06</span><span class="sec-tag">Head-to-Head Comparison</span></div>
+    <h2>SentinelOne vs. Primary Competitors — Comparison Matrix</h2>
+    <div class="matrix-wrap">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th class="hi">SentinelOne</th>
+            <th>CrowdStrike</th>
+            <th>Microsoft Defender XDR</th>
+            <th>Palo Alto Cortex</th>
+            <th>Trellix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Primary Differentiator</td>
+            <td class="hi">On-device Behavioral AI; 1-Click Rollback; Storyline™ correlation</td>
+            <td>Threat Graph (2T events/week); Charlotte AI agentic SOAR; OverWatch MDR</td>
+            <td>M365 E5 bundling; Copilot for Security; native Microsoft stack integration</td>
+            <td>Platformization (endpoint+network+cloud+SOC); Unit 42 intel; XSIAM</td>
+            <td>Installed base (40K customers, 80% Fortune 100); FireEye intel heritage</td>
+          </tr>
+          <tr>
+            <td>AI Capability</td>
+            <td class="hi"><span class="ck">✓✓</span> Purple AI GA; 40% attach rate; on-device Behavioral AI; Storyline auto-correlation</td>
+            <td><span class="ck">✓✓</span> Charlotte AI agentic SOAR; correlation rule gen; workflow automation — tasks compressed 4 days → minutes</td>
+            <td><span class="ck">✓✓</span> Copilot for Security (most mature GenAI); MCP Server; agentic platform; predictive shielding</td>
+            <td><span class="ck">✓</span> XSIAM AI-driven SOC; Precision AI; improving but less specifically branded than Purple/Charlotte</td>
+            <td><span class="cp">~</span> Wise AI improving but limited analyst recognition; trails peers meaningfully</td>
+          </tr>
+          <tr>
+            <td>Offline / On-Device Protection</td>
+            <td class="hi"><span class="ck">✓✓</span> Full protection offline; on-device AI; no cloud dependency for detection or response</td>
+            <td><span class="cx">✗</span> Cloud-dependent; reduced capability when connectivity lost</td>
+            <td><span class="cx">✗</span> Cloud-native; no meaningful offline mode</td>
+            <td><span class="cx">✗</span> Primarily cloud-dependent</td>
+            <td><span class="cp">~</span> Some on-prem capability; hybrid, ageing architecture</td>
+          </tr>
+          <tr>
+            <td>Ransomware Recovery</td>
+            <td class="hi"><span class="ck">✓✓</span> 1-Click Rollback — unique; VSS-based snapshots; no analyst, no cloud needed</td>
+            <td>Automated response available; no direct 1-Click Rollback equivalent</td>
+            <td>Automated isolation; recovery requires more manual steps than S1</td>
+            <td>Automated response; no equivalent single-click rollback</td>
+            <td>Automated response; generally manual recovery steps required</td>
+          </tr>
+          <tr>
+            <td>SIEM / Data Lake</td>
+            <td class="hi">Singularity AI SIEM + Data Lake; AI Data Pipelines (Observo AI); improving rapidly</td>
+            <td><span class="ck">✓</span> Next-Gen SIEM (LogScale) — record ARR; index-free; Charlotte AI integration</td>
+            <td><span class="ck">✓✓</span> Microsoft Sentinel — market-leading; unified data lake; Copilot for Security; MCP Server</td>
+            <td><span class="ck">✓</span> XSIAM absorbed QRadar SaaS; strong SOC automation narrative</td>
+            <td>Limited SIEM capability; not a meaningful SIEM competitor</td>
+          </tr>
+          <tr>
+            <td>Identity Security</td>
+            <td class="hi"><span class="ck">✓</span> Singularity Identity (Feb 2026); human + non-human AI agents; first-mover in agentic identity</td>
+            <td><span class="ck">✓</span> Falcon Identity — AD/Entra ID monitoring; credential-based lateral movement detection</td>
+            <td><span class="ck">✓✓</span> Entra ID native; deep ITDR; MFA enforcement; widest identity surface coverage</td>
+            <td><span class="ck">✓</span> Prisma Cloud covers workload identity; Cortex covers endpoint identity</td>
+            <td><span class="cx">✗</span> Limited dedicated identity security offering</td>
+          </tr>
+          <tr>
+            <td>Cloud Security</td>
+            <td class="hi"><span class="ck">✓</span> Singularity Cloud — 50% of new bookings; CWPP, CSPM, KSPM; agentless scanning</td>
+            <td><span class="ck">✓</span> Falcon Cloud Security — CSPM, CWPP; strong AWS integration</td>
+            <td><span class="ck">✓✓</span> Defender for Cloud — native Azure integration; multi-cloud CSPM</td>
+            <td><span class="ck">✓✓</span> Prisma Cloud — market-leading CSPM/CNAPP; deepest cloud security coverage</td>
+            <td><span class="cx">✗</span> No meaningful cloud-native security offering</td>
+          </tr>
+          <tr>
+            <td>Pricing Model</td>
+            <td class="hi">Flex licensing — consumption-based; tiered tiers (Core → Complete); module add-ons</td>
+            <td>Falcon Flex — comparable consumption model; premium pricing at enterprise scale</td>
+            <td>Bundled in M365 E5 — near-zero incremental for existing subscribers</td>
+            <td>Platform-level contracts; large upfront commitments; PS-heavy deployment</td>
+            <td>Traditional seat-based; predictable but inflexible</td>
+          </tr>
+          <tr>
+            <td>Gartner EPP MQ Position</td>
+            <td class="hi"><span class="ck">✓✓</span> Leader — 6 consecutive years (2026)</td>
+            <td><span class="ck">✓✓</span> Leader — consistently at top-right of quadrant</td>
+            <td><span class="ck">✓✓</span> Leader — closes quality gap YoY</td>
+            <td><span class="ck">✓</span> Leader in Cortex XDR; strong in endpoint</td>
+            <td><span class="cx">✗</span> Dropped to Niche Player — significant credibility loss</td>
+          </tr>
+          <tr>
+            <td>Threat Intelligence</td>
+            <td class="hi">WatchTower threat intel; Purple AI TTP summaries; improving</td>
+            <td><span class="ck">✓✓</span> Adversary Intelligence (Threat Graph); 2T events/week; deepest in market</td>
+            <td><span class="ck">✓</span> Microsoft threat intelligence; broad but less endpoint-specific</td>
+            <td><span class="ck">✓✓</span> Unit 42 — most cited external threat intelligence team in industry</td>
+            <td><span class="ck">✓</span> FireEye Mandiant heritage — strong nation-state focus</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 07 POSITIONING MAP -->
+  <section id="posmap">
+    <div class="sec-label"><span class="sec-num">07</span><span class="sec-tag">Strategic Positioning</span></div>
+    <h2>Positioning Map — Autonomy vs. Platform Breadth</h2>
+    <div class="card"><div class="card-body">
+
+      <div style="display:flex;align-items:stretch;gap:0;margin-bottom:16px;">
+        <!-- Y-axis labels -->
+        <div style="width:32px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:4px 0;">
+          <span style="display:block;font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);writing-mode:vertical-rl;transform:rotate(180deg);line-height:1.2;text-align:center;">Autonomous ↑</span>
+          <span style="display:block;font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);writing-mode:vertical-rl;transform:rotate(180deg);line-height:1.2;text-align:center;">↓ Analyst-Led</span>
+        </div>
+        <!-- Map canvas -->
+        <div style="flex:1;min-width:0;">
+          <div class="pos-canvas">
+            <div class="pos-grid-bg"></div>
+            <div class="pos-ch"></div>
+            <div class="pos-cv"></div>
+            <!-- S1: high autonomy, mid-right platform breadth -->
+            <div class="pos-dot s1" style="left:52%;bottom:80%;" title="SentinelOne — high autonomy, growing platform breadth">S1</div>
+            <!-- CrowdStrike: high autonomy + broadest platform -->
+            <div class="pos-dot crwd" style="left:82%;bottom:72%;" title="CrowdStrike — deepest threat intel, broadest platform, Charlotte AI agentic">CRWD</div>
+            <!-- Microsoft: mid autonomy (Copilot is strong but human-guided), very broad platform -->
+            <div class="pos-dot msft" style="left:88%;bottom:48%;" title="Microsoft — broadest platform/bundling, Copilot for Security strong but less autonomous">MSFT</div>
+            <!-- Palo Alto: mid autonomy, very broad platform (NGFW+XDR+Cloud+SIEM) -->
+            <div class="pos-dot palo" style="left:80%;bottom:40%;" title="Palo Alto — platform breadth leader (NGFW+Cortex+Prisma+XSIAM); less endpoint-autonomous">PANW</div>
+            <!-- Trellix: low autonomy, narrow-ish platform -->
+            <div class="pos-dot trlx" style="left:38%;bottom:22%;" title="Trellix — large installed base, improving AI, but legacy architecture limits autonomy">TRLX</div>
+            <div class="axis-label" style="bottom:-22px;right:0;">→ Platform Breadth / Consolidation</div>
+            <div class="axis-label" style="bottom:-22px;left:0;">← Point Solution / Specialist</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="leg-row">
+        <div class="leg-item"><div class="leg-dot" style="background:#3a0070;border:2px solid var(--violet)"></div>SentinelOne (S1)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#1a0f2e;border:1px solid #7c3aed"></div>CrowdStrike (CRWD)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#0a1a3a;border:1px solid #2563eb"></div>Microsoft Defender (MSFT)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#0a2a1a;border:1px solid #16a34a"></div>Palo Alto Cortex (PANW)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#2a1a0a;border:1px solid #ea580c"></div>Trellix (TRLX)</div>
+      </div>
+
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-top:16px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Positioning Methodology</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <p style="font-size:12px;margin-bottom:0;"><strong>Y-axis — Autonomous Security</strong> (top = machine-speed autonomous response; bottom = analyst-led manual response): scored on — (1) on-device AI independence from cloud, (2) automated remediation without human approval, (3) 1-click/zero-click recovery capability, (4) AI at attach/usage rates in production. SentinelOne scores highest on Y-axis autonomy due to on-device Behavioral AI, 1-Click Rollback, and Storyline auto-correlation. CrowdStrike is close behind with Charlotte AI agentic SOAR compressing tasks from days to minutes.</p>
+          </div>
+          <div>
+            <p style="font-size:12px;margin-bottom:0;"><strong>X-axis — Platform Breadth</strong> (left = endpoint/EDR specialist; right = full-platform consolidator): scored on — (1) number of active pillars (endpoint, cloud, identity, SIEM, network), (2) CISO consolidation narrative strength, (3) cross-sell attach rates. Microsoft and CrowdStrike rank highest on breadth. SentinelOne is in the upper-mid zone — strong platform ambition and growing attach rates (75%+ YoY growth in 3+ solution customers) but not yet at Microsoft/PANW breadth. The strategic imperative is to move right without sacrificing the autonomy advantage that differentiates S1 from every competitor.</p>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 08 CONTENT GAPS -->
+  <section id="gaps">
+    <div class="sec-label"><span class="sec-num">08</span><span class="sec-tag">Content Gap Analysis</span></div>
+    <h2>Where SentinelOne Can Own Narrative — and Where It's Losing Ground</h2>
+    <div class="grid-2">
+      <div>
+        <div class="co co-g"><h4>Topics SentinelOne Can Own (Competitors Can't)</h4></div>
+        <ul class="blist">
+          <li><span class="dot dg"></span><strong>Non-Human Identity Security for AI Agents</strong> — No competitor has a purpose-built agentic identity narrative at GA. The Feb 2026 launch positions S1 as first-mover. A dedicated "Securing Autonomous AI: What Your Identity Platform Was Never Built For" whitepaper would be unchallenged.</li>
+          <li><span class="dot dg"></span><strong>Autonomous Ransomware Recovery</strong> — 1-Click Rollback is genuinely unique. A content series with quantified customer recovery times (MTTR data, encrypted file restoration metrics) would be highly shareable and difficult for competitors to counter.</li>
+          <li><span class="dot dg"></span><strong>Offline Endpoint Protection</strong> — Industrial, OT, healthcare, and branch environments where cloud connectivity cannot be guaranteed. No cloud-native competitor (Microsoft, CrowdStrike) can credibly claim this space.</li>
+          <li><span class="dot dg"></span><strong>Purple AI ROI Benchmarks</strong> — With 40% attach rate and genuine analyst productivity claims, quantified before/after data (hours saved per investigation, junior vs senior analyst parity, false-positive reduction) would be rare and credible assets.</li>
+          <li><span class="dot dg"></span><strong>The CrowdStrike Outage Case for Architecture</strong> — A vendor-neutral technical brief explaining why cloud-dependent sensor architectures create systemic outage risk (without naming the July 2024 event directly) makes a structural case for on-device AI that is honest and durable.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="co co-r"><h4>Narrative Gaps vs. Competitors (Needs Investment)</h4></div>
+        <ul class="blist">
+          <li><span class="dot dr"></span><strong>Threat Intelligence Volume Story</strong> — CrowdStrike's Threat Graph (2T events/week) and Palo Alto's Unit 42 dominate threat intelligence mindshare. SentinelOne's WatchTower intel needs a specific, quantified equivalent claim to compete in analyst-driven evaluations.</li>
+          <li><span class="dot dr"></span><strong>SIEM Displacement Case Studies</strong> — Singularity AI SIEM needs 3–5 published case studies where enterprises replaced Splunk or Sentinel (not just supplemented) with quantified outcomes: ingestion cost reduction, query speed, analyst productivity.</li>
+          <li><span class="dot dr"></span><strong>MITRE Withdrawal Counter-Narrative</strong> — CrowdStrike actively uses S1's MITRE Engenuity withdrawal in competitive deals. S1 needs a published technical response explaining the architectural mismatch between the cross-domain evaluation scope and S1's product design — not silence.</li>
+          <li><span class="dot dr"></span><strong>Microsoft Bundling Wedge Content</strong> — Content specifically addressing the "why not just use what's included in E5?" objection — framed around detection quality differentials in heterogeneous environments, not on price.</li>
+          <li><span class="dot dr"></span>          <li><span class="dot dr"></span><strong>Analyst Recognition Expansion</strong> — S1 is a Gartner EPP Leader but less visible in Forrester EDR Wave, IDC MarketScape, and emerging XDR matrices. A systematic analyst briefing programme targeting these additional recognition moments would improve RFP shortlist inclusion rates.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 OPP & THREATS -->
+  <section id="opp">
+    <div class="sec-label"><span class="sec-num">09</span><span class="sec-tag">Strategic Assessment</span></div>
+    <h2>Opportunities to Capture — Threats to Defend</h2>
+    <div class="ot-grid">
+      <div>
+        <h3 style="color:var(--green);margin-bottom:16px;">// Opportunities</h3>
+        <div class="ot-item"><span class="ot-num o">O1</span><div class="ot-body"><h4>Agentic AI Creates a New Security Category S1 Can Lead</h4><p>The Feb 2026 identity portfolio positions SentinelOne as the only vendor with a purpose-built framework for securing autonomous AI agent identities. As enterprises deploy GenAI tools at scale, agent-to-agent trust and non-human identity governance becomes a board-level risk. SentinelOne is 12–18 months ahead of meaningful competition in this specific niche.</p></div></div>
+        <div class="ot-item"><span class="ot-num o">O2</span><div class="ot-body"><h4>Trellix Displacement — 40,000 Accounts, 80% Fortune 100</h4><p>Trellix dropped to Gartner MQ Niche Player while S1 is a 6x Leader. With post-merger integration fatigue and no cloud-native architecture, Trellix accounts are actively evaluating alternatives. S1 should build a dedicated Trellix displacement programme with structured migration services, targeting renewal accounts 9–12 months ahead of expiry.</p></div></div>
+        <div class="ot-item"><span class="ot-num o">O3</span><div class="ot-body"><h4>Cloud Security — 50% of New Bookings, Fastest-Growing Pillar</h4><p>Singularity Cloud accounting for 50% of new bookings is the clearest signal of enterprise demand direction. Palo Alto Prisma Cloud leads but is priced for large enterprises with extensive PS requirements. S1's simplified deployment and Flex licensing create a viable wedge in mid-market and cloud-native orgs that can't staff a Prisma Cloud implementation.</p></div></div>
+        <div class="ot-item"><span class="ot-num o">O4</span><div class="ot-body"><h4>CrowdStrike Outage Trust Gap in Risk-Averse Verticals</h4><p>Healthcare, financial services, and critical infrastructure CISOs remain sensitized to the July 2024 outage risk. In regulated sectors where a sensor-induced outage has direct operational consequence, S1's on-device architecture is not just a feature — it's an audit-relevant risk mitigation argument.</p></div></div>
+        <div class="ot-item"><span class="ot-num o">O5</span><div class="ot-body"><h4>Lenovo Partnership — 30M Endpoint Addressable Market</h4><p>The Lenovo OEM partnership targets 30M endpoints over several years — a distribution channel that no other pure-play security vendor currently has at this scale. If execution tracks, this creates a structural ARR flywheel independent of direct sales velocity.</p></div></div>
+      </div>
+      <div>
+        <h3 style="color:var(--red);margin-bottom:16px;">// Threats</h3>
+        <div class="ot-item"><span class="ot-num t">T1</span><div class="ot-body"><h4>Microsoft E5 Bundling Compresses Mid-Market TAM</h4><p>As M365 E5 adoption deepens, "why not just use Defender" becomes the primary deal blocker. S1 must invest in content specifically around detection quality differentials in heterogeneous, non-Windows, and offline environments to maintain mid-market penetration.</p></div></div>
+        <div class="ot-item"><span class="ot-num t">T2</span><div class="ot-body"><h4>CrowdStrike's Scale Advantage Compounds Every Quarter</h4><p>CrowdStrike's $1.24B FCF vs S1's $51M creates a compounding R&amp;D investment gap. Charlotte AI and Falcon Next-Gen SIEM improvements funded by CrowdStrike's cash flow are structural, not cyclical. SentinelOne must identify where its architectural advantages are durable and double down — it cannot win a features arms race against a 5× cash-generating rival.</p></div></div>
+        <div class="ot-item"><span class="ot-num t">T3</span><div class="ot-body"><h4>MITRE Withdrawal Becomes a Standard Competitive Objection</h4><p>CrowdStrike's comparison pages actively cite S1's withdrawal from the most recent MITRE Engenuity cross-domain evaluation. Without a published counter-narrative, this is handled individually by sales teams rather than systematically, increasing deal cycle length and loss rates in sophisticated evaluations.</p></div></div>
+        <div class="ot-item"><span class="ot-num t">T4</span><div class="ot-body"><h4>Identity Security Credibility Test Against Native Vendors</h4><p>The Feb 2026 identity launch will face credibility challenges from identity-native vendors (Okta, CyberArk, SailPoint) with deeper governance and IGA histories. S1 must win the identity argument on runtime behavioral validation — where its endpoint+identity signal correlation is genuinely superior — rather than competing on governance breadth where it trails.</p></div></div>
+        <div class="ot-item"><span class="ot-num t">T5</span><div class="ot-body"><h4>Valuation Compression Limits Acquisition Currency</h4><p>Trading ~83% below its 2021 all-time high, S1's stock-based M&amp;A currency is severely limited. CrowdStrike, Palo Alto, and Microsoft can acquire capability gaps; S1 must build them. Future capability gaps in threat intelligence scale and network security may require acquisitions that the current stock price makes expensive relative to peers.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 RECOMMENDATIONS -->
+  <section id="actions">
+    <div class="sec-label"><span class="sec-num">10</span><span class="sec-tag">Recommended Actions</span></div>
+    <h2>Recommended Actions — Product Marketing &amp; CI</h2>
+    <div class="rec-grid">
+      <div class="rec-card"><div class="rec-head qw">&#x26A1; Quick Win</div><div class="rec-body">
+        <h4>Publish a MITRE Withdrawal Technical Response</h4>
+        <p>A technical brief explaining why S1's architecture was mismatched with the cross-domain evaluation scope — framed as architectural integrity, not retreat. Pre-empts the standard CrowdStrike competitive objection with a prepared, searchable counter-narrative.</p>
+      </div></div>
+      <div class="rec-card"><div class="rec-head qw">&#x26A1; Quick Win</div><div class="rec-body">
+        <h4>Launch "Purple AI ROI" Benchmark Content</h4>
+        <p>Quantify what 40% attach rate means for customers — hours saved per investigation, junior analyst uplift, false positive reduction. Three named customer case studies with numbers would be uncounterable and directly address the "is Purple AI operational or aspirational?" objection.</p>
+      </div></div>
+      <div class="rec-card"><div class="rec-head qw">&#x26A1; Quick Win</div><div class="rec-body">
+        <h4>Build a Trellix Displacement Programme</h4>
+        <p>Structured displacement playbook: Gartner MQ gap presentation, migration services, cloud workload wedge, Purple AI vs Wise AI comparison. Target renewal accounts via channel partners 9–12 months ahead of expiry. 40,000 Trellix accounts is the largest available displacement opportunity in the category.</p>
+      </div></div>
+      <div class="rec-card"><div class="rec-head st">&#x1F3AF; Strategic</div><div class="rec-body">
+        <h4>Win the "Agentic AI Security" Category Narrative</h4>
+        <p>Publish S1's perspective on securing non-human identities — what an AI agent is, why traditional IAM fails, how runtime behavioral validation works. No competitor has this content at depth. Own it before CrowdStrike or Palo Alto builds a counter-narrative in late 2026.</p>
+      </div></div>
+      <div class="rec-card"><div class="rec-head st">&#x1F3AF; Strategic</div><div class="rec-body">
+        <h4>Publish Singularity AI SIEM Displacement Case Studies</h4>
+        <p>Three to five named enterprises that replaced Splunk or Sentinel with quantified ingestion cost reduction and query performance data. Transforms the SIEM narrative from "runs alongside your SIEM" to "replaces it" — unlocking a materially larger ARR expansion opportunity per account.</p>
+      </div></div>
+      <div class="rec-card"><div class="rec-head df">&#x1F6E1; Defensive</div><div class="rec-body">
+        <h4>Arm Sales with Microsoft E5 Objection Playbook</h4>
+        <p>A prepared counter to "Defender is included in our E5" — focused on heterogeneous fleet detection quality, offline/OT environments, autonomous remediation depth, and Purple AI investigation speed. Not a price argument. A capability argument for the environments where Microsoft underperforms.</p>
+      </div></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span class="footer-logo">S1 // CI</span>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:var(--text);">SentinelOne — Competitive Intelligence Brief</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Strategy &amp; Competitive Intelligence — Career Outreach Collateral</div>
+    </div>
+  </div>
+  <div class="footer-meta">
+    Research Date: June 2026<br>
+    Sources: SEC Filings (FY2026), Gartner Peer Insights, SentinelOne.com, MarketsandMarkets, Futurum, Finimize, MatrixBCG<br>
+    Competitor data publicly sourced — verify financials before board-level use
+  </div>
+</div>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    const ids = ['crwd','msft','palo','trlx'];
+    const idx = ids.indexOf(id);
+    if(idx >= 0) document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+    const panel = document.getElementById('panel-' + id);
+    if(panel) panel.classList.add('active');
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
